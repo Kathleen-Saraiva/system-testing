@@ -18,4 +18,8 @@ public class ProcessosMostrar {
     public void clicarVoltar() {
         driver.click(".ls-btn-primary-danger","css");
     }
+
+    public String getField(String field){
+        return driver.getText(field);
+    }
 }

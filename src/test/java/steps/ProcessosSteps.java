@@ -12,6 +12,7 @@ public class ProcessosSteps extends BaseSteps {
     private Menu menu = new Menu(driver);
     private OptionsProcessos optionsProcessos = new OptionsProcessos(driver);
     private ProcessosPost processosPost = new ProcessosPost(driver);
+    private ProcessoEdit processoEdit = new ProcessoEdit(driver);
     private ProcessosMostrar processosMostrar = new ProcessosMostrar(driver);
 
     @Dado("^que o usuário está na Pagina Inicial$")
@@ -30,10 +31,18 @@ public class ProcessosSteps extends BaseSteps {
     public void oUsuarioDigitarNoCampoOValor(String campo, String valor) throws Throwable {
         processosPost.preencherCampo(campo, valor);
     }
-    @Quando("^o usuário clicar no botão \"(.*)\" na página de inclusão de processos$")
-    public void oUsuarioClicarNoBotaoSalvar(String botao) {
-        processosPost.clicarSalvar(botao);
+    @E("^o usuário digitar no campo de editar \"([^\"]*)\" o valor \"([^\"]*)\"$")
+    public void oUsuarioDigitarNoCampoDeEditarOValor(String campo, String valor) throws Throwable {
+        processoEdit.preencherCampo(campo, valor);
+    }
+    @Quando("^o usuário clicar no botão salvar na página de inclusão de processos$")
+    public void oUsuarioClicarNoBotaoSalvar() {
+        processosPost.clicarSalvar();
         processosPost.setCode(processosMostrar.recuperaCodigo());
+    }
+    @Quando("^o usuário clicar no botão salvar na página de editar$")
+    public void oUsuarioClicarNoBotaoSalvarEmEditar() {
+        processoEdit.clicarSalvar();
     }
     @Então("^o usuário deveria visualizar a mensagem \"([^\"]*)\"$")
     public void oUsuarioDeveriaVisualizarAMensagem(String message) throws Throwable {
@@ -51,8 +60,32 @@ public class ProcessosSteps extends BaseSteps {
     public void oUsuárioClicarEmVoltar() {
         processosMostrar.clicarVoltar();
     }
-    @Então("^o usuário deveria ver o texto \"([^\"]*)\"$")
-    public void oUsuárioDeveriaVerOTexto(String message) throws Throwable {
-        Assert.assertTrue(optionsProcessos.existeTexto(message));
+    @Quando ("^o usuário clica no botao mostrar do processo cadastrado$")
+    public void oUsuarioClicaNoBotaoMostrarDoUsuarioCadastrado(){
+        optionsProcessos.clickMostrar(processosPost.getCode());
+    }
+    @Quando ("^o usuário clica no botao editar do processo cadastrado$")
+    public void oUsuarioClicaNoBotaoEditarDoUsuarioCadastrado(){
+        optionsProcessos.clickEditar(processosPost.getCode());
+    }
+
+    @Então("^o usuário deveria ver o valor \"([^\"]*)\" no campo \"([^\"]*)\"$")
+    public void oUsuarioDeveriaVerOValorNoCampo(String value, String field) throws Throwable{
+        Assert.assertEquals(value,processosMostrar.getField(field));
+    }
+
+    @Quando("^o usuário clicar no botao apagar do processo cadastrado$")
+    public void oUsuarioClicarNoBotaoApagarDoProcessoCadastrado() {
+        optionsProcessos.clickDeletar(processosPost.getCode());
+    }
+
+    @E("^o usuario confirmar a deleção$")
+    public void oUsuarioConfirmarADelecao() {
+        optionsProcessos.confirmaDelecao();
+    }
+
+    @Então("^o botão apagar não pode mais exister para o processo cadastrado$")
+    public void oBotaoApagarNaoPodeMaisExisterParaOProcessoCadastrado() {
+        Assert.assertFalse(optionsProcessos.existeBotaoApagar(processosPost.getCode()));
     }
 }

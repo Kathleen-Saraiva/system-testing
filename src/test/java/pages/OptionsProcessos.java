@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import support.DriverQA;
 
 public class OptionsProcessos {
@@ -21,9 +22,18 @@ public class OptionsProcessos {
     public void clickDeletar(String code){
         driver.click("btn-delete_"+code);
     }
+    public void confirmaDelecao(){
+        driver.ChooseOkOnNextConfirmation();
+    }
+    public boolean existeBotaoApagar(String code){
+        boolean respose = true;
+        try{
+            respose = driver.getDriver().findElement(By.id("btn-delete_"+code)).isDisplayed();
 
-    public boolean existeTexto(String message) {
-        return driver.getTextAllPage(message);
+        }catch (Exception e){
+            respose = false;
+        }
+        return respose;
     }
 
 }
