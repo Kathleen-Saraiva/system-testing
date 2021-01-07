@@ -54,4 +54,27 @@ Funcionalidade: CRUD Processos
     E o usuario confirmar a deleção
     Então o botão apagar não pode mais exister para o processo cadastrado
 
+  @example
+  Esquema do Cenario: : Validação de POST via Scenario Outline. Teste: <mensagem retorno>
+    Dado  que o usuário está na Pagina Inicial
+    E o usuário clicar no menu "processos"
+    E o usuário clicar no botão novo processo
+    E o usuário digitar no campo "processo_vara" o valor "São Paulo"
+    E o usuário digitar no campo "processo_numero_processo" o valor "234"
+    E o usuário digitar no campo "processo_natureza" o valor "<natureza>"
+    E o usuário digitar no campo "processo_partes" o valor "Queitilin x Vitao"
+    E o usuário seleciona no campo urgencia o valor "Não"
+    E o usuário clica no campo arbitramento com o valor Sim
+    E o usuário digitar no campo "processo_assistente_social" o valor "Cinthia"
+    E o usuário digitar no campo "processo_data_entrada" o valor "05/01/2021"
+    E o usuário digitar no campo "processo_data_saida" o valor "05/04/2021"
+    E o usuário digitar no campo "processo_data_agendamento" o valor "05/03/2021"
+    E o usuário digitar no campo "processo_status" o valor "Agendado"
+    E o usuário digitar no campo "processo_observacao" o valor "Teste"
+
+    Exemplos:
+      | natureza | mensagem retorno        |
+      | Civil    | Salvo com sucesso       |
+      | Crimical | Nao processado          |
+
 
